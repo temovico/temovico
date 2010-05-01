@@ -1,0 +1,6 @@
+setup on mac
+
+1. leopard, use php 5.3.0 and apache 2.2.11
+http://maestric.com/doc/mac/apache_php_mysql_snow_leopard
+
+...
