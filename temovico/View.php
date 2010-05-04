@@ -2,7 +2,6 @@
 
 include_once "{$GLOBALS['temovico']['config']['framework_root']}/Logger.php";
 
-
 /**
  * View
  *

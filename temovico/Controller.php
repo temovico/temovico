@@ -52,17 +52,14 @@ abstract class Controller {
 
       Logger::info("Running {$params['controller']}Controller#{$this->action} with params:\n"  . print_r($params, true), $this->controller_name);
       
-      if (false) { // TODO: have configuration in mainsite.conf.php to change whether these are shown
+      if ($GLOBALS['temovico']['config']['log_post_and_get_arrays']) { // TODO: have configuration in mainsite.conf.php to change whether these are shown
         Logger::debug(
-          "\$_REQUEST:\n" . print_r($_REQUEST, true) . "\n" .
           "\$_POST:\n" . print_r($_POST, true) . "\n" .
           "\$_GET:\n" . print_r($_GET, true),
           $this->controller_name
         );
       }
       
-      
-
       $this->_brb = new BigRedButton();
 
       // Create the View for this Controller

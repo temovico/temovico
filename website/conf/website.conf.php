@@ -1,5 +1,7 @@
 <?php
 
+// TODO: maybe build a wrapper around this so user can do Config::param('key', 'nested key', 'more nested key').. not sure if that's worth it or cool...
+
 // php.ini stuff here
 date_default_timezone_set("America/Los_Angeles");
 mb_internal_encoding('UTF-8');
@@ -7,13 +9,47 @@ mb_internal_encoding('UTF-8');
 //ini_set('display_errors', '1');
 
 $TEMOVICO_WEBSITE_ROOT = realpath(dirname(__FILE__) . '/../');
+$TEMOVICO_WEBSITE_NAME = 'my website';
 
 $GLOBALS['temovico']['config'] = array(
+  
+  'website_root' => $TEMOVICO_WEBSITE_ROOT,
+  'framework_root' => realpath(dirname(__FILE__) . '/../../temovico/'),
+  'website_name' => $TEMOVICO_WEBSITE_NAME,
+  'salt' => "HELLO_WEB_USER!",
+  'response_types' => array('json', 'xml', 'rss', 'html', 'csv'),
   
   // log
   'log' => array(
     'filepath' => "/tmp/temovico_website.log",
     'priority' => 'DEBUG' // ALERT > CRITICAL > ERROR > WARNING > NOTICE > INFO > DEBUG
+  ),
+  
+  'mysql' => array(
+    'databases' => array(
+      'website' => array(
+        'database' => 'website',
+        'host' => 'localhost',
+        'username' => 'root',
+        'password' => ''
+      )
+    ),
+    'default' => 'website'
+  ),
+  
+  'web_services' => array(
+    'twitter' => array(
+    )
+  ),
+  
+  'log_post_and_get_arrays' => false,
+  
+  // render, service and db timing
+  'timing_metrics' => true,  
+  
+  // debugging & development output on screen
+  'dev_mode' => array (
+    'enabled' => false 
   ),
   
   'static_dirs' => array(
@@ -29,17 +65,13 @@ $GLOBALS['temovico']['config'] = array(
       '127.0.0.1:22222'
     )
   ),
-    
-  'salt' => "HELLO_WEB_USER!",
-    
-  'timing_metrics' => true,  // render & db timing
-  'dev_mode' => false, // debugging & development output on screen
   
-  'website_root' => $TEMOVICO_WEBSITE_ROOT,
-  'framework_root' => realpath(dirname(__FILE__) . '/../../temovico/'),
-  'website_name' => 'My rad website',
-  
-  'response_types' => array('json', 'xml', 'rss', 'html', 'csv'),
+  'service' => array(
+    'user_agent' => "$TEMOVICO_WEBSITE_NAME",
+    'services' => array(
+    
+    )
+  ),
   
   'brb' => array(
     'live' => '/etc/temovico/brb.conf', 
@@ -52,9 +84,11 @@ $GLOBALS['temovico']['config'] = array(
   ),
 );
 
+// have to look for php directive so that we can do this and take out the mention of the $GLOBALS['temovico']['routes'] in that file.. 
 // $GLOBALS['temovico']['routes'] = include("{$GLOBALS['temovico']['config']['website_root']}/conf/routes.conf.php");
 
 include("{$GLOBALS['temovico']['config']['website_root']}/conf/routes.conf.php");
+
 
 // Full site BRB
 $live_brb = $GLOBALS['temovico']['config']['brb']['live'];

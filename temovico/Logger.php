@@ -20,8 +20,10 @@ class Logger {
   private $filepath;
   
   private function __construct() {
+    
+    // defaults
     $this->priority = self::$LEVELS['DEBUG'];
-    $this->filepath = '/var/log/website.log';  #. date("Ymd", time()) ?
+    $this->filepath = '/var/log/website.log';
     
     if (array_key_exists('log', $GLOBALS['temovico']['config'])) {
       $log_config = $GLOBALS['temovico']['config']['log'];
@@ -77,8 +79,8 @@ class Logger {
   public static function info($msg, $tags = null) { self::instance()->log($msg, 'INFO', $tags); }
   public static function debug($msg, $tags = null) { self::instance()->log($msg, 'DEBUG', $tags); }
   
-  public function __call($functionName, $args) {
-    $priority = strtoupper($functionName);
+  public function __call($function_name, $args) {
+    $priority = strtoupper($function_name);
     if (array_key_exists($priority, self::$LEVELS)) {
       $this->log($msg = $args[0], $priority, $tags = $args[1]);
     }
