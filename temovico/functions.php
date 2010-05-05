@@ -43,4 +43,39 @@ function squeeze($str) {
   return $str;
 }
 
+function str_replace_first($search, $replace, $in) {
+  $pos = strpos($in, $search);
+  if($pos === false) {
+    return $in;
+  } else {
+    return mb_substr($in, 0, $pos) . $replace . mb_substr($in, $pos + mb_strlen($search), mb_strlen($in));
+  }
+}
+
+function each_array_key_exists($keys, $array) {
+  foreach($keys as $key) {
+    if (!array_key_exists($key, $array)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+// maybe this function already exists but i couldn't find it 
+function array_filter_by_keys($array, $keys) {
+  $result = array();
+  foreach($keys as $key) {
+    if (array_key_exists($key, $array)) {
+      $result[$key] = $array[$key];
+    }
+  }
+  return $result; 
+}
+
+function printit($data) {    
+  print "<pre>";
+  print_r ($data);
+  print "</pre>";
+}
+
 ?>

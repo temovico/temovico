@@ -27,9 +27,9 @@ class Cache {
   
   private function __construct() {
     $this->memcache = new memcache();
-    $this->enabled = $GLOBALS['temovico']['config']['memcache']['enabled'];
+    $this->enabled = $GLOBALS['temovico']['memcache']['enabled'];
     if ($this->enabled) {
-      foreach($GLOBALS['temovico']['config']['memcache']['servers'] as $server) {
+      foreach($GLOBALS['temovico']['memcache']['servers'] as $server) {
         list($host, $port) = split(':', $server);
         if ($this->memcache->addServer($host, $port)) {
           Logger::info("Cache added memcache server: $server");

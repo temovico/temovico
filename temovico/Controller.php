@@ -1,9 +1,9 @@
 <?
 
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/View.php";
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/BigRedButton.php";
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/functions.php";
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/Logger.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/View.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/BigRedButton.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/functions.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/Logger.php";
 
 /**
 * Controller
@@ -52,8 +52,8 @@ abstract class Controller {
 
       Logger::info("Running {$params['controller']}Controller#{$this->action} with params:\n"  . print_r($params, true), $this->controller_name);
       
-      if ($GLOBALS['temovico']['config']['log_post_and_get_arrays']) { // TODO: have configuration in mainsite.conf.php to change whether these are shown
-        Logger::debug(
+      if ($GLOBALS['temovico']['log_post_and_get_arrays']) { // TODO: have configuration in mainsite.conf.php to change whether these are shown
+        Logger::info(
           "\$_POST:\n" . print_r($_POST, true) . "\n" .
           "\$_GET:\n" . print_r($_GET, true),
           $this->controller_name
@@ -64,7 +64,7 @@ abstract class Controller {
 
       // Create the View for this Controller
       $this->_view = new View($this->controller_name);
-      $this->_view->title = $GLOBALS['temovico']['config']['website_name'];
+      $this->_view->title = $GLOBALS['temovico']['website_name'];
       $this->_view->stylesheets = array("{$this->controller_name}.css");
       $this->_view->javascripts = array("{$this->controller_name}.js");
 
@@ -102,7 +102,7 @@ abstract class Controller {
         }
       }
 
-      include_once "{$GLOBALS['temovico']['config']['website_root']}/php/helpers/{$this->controller_name}.php";
+      include_once "{$GLOBALS['temovico']['website_root']}/php/helpers/{$this->controller_name}.php";
 
       /////////////////////////////////
       // PREPARE AND RENDER THE VIEW //
@@ -116,7 +116,7 @@ abstract class Controller {
       }
       
       // allow override with $this->params['format']
-      $response_types = $GLOBALS['temovico']['config']['response_types'];
+      $response_types = $GLOBALS['temovico']['response_types'];
       if (array_key_exists('format', $this->params) and in_array($this->params['format'], $response_types)) {
         $response_type =  $this->params['format'];
       }
@@ -127,9 +127,9 @@ abstract class Controller {
       // DETERMINE THE LAYOUT
       $layout = $response_type;
 
-      Logger::debug("Rendering $template within $layout layout");
+      Logger::info("Rendering $template within $layout layout");
       $this->_view->render($template, $layout);
-      Logger::debug('Done rendering.', $this->controller_name);
+      Logger::info('Done rendering.', $this->controller_name);
 
     } catch (Exception $e) {
       if ($this->is_ajax_request()) {
@@ -160,7 +160,7 @@ abstract class Controller {
     if ($this->_new_flash) {
       $_SESSION['flash'] = $this->_new_flash;
     }
-
+    
     $location = $url_override . $path;
     header("Location: $location");
     exit;

@@ -1,8 +1,8 @@
 <?php
 
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/Logger.php";
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/DataService.php";
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/functions.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/Logger.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/DataService.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/functions.php";
 
 class CurlWebService extends DataService {
 
@@ -19,16 +19,37 @@ class CurlWebService extends DataService {
 
     protected $result;
     
+    private static $singletons = array();
+
+    public static function singleton() {
+      // assumes all the services classes are named like BlahBlahBlahService
+      $name = strtolower(substr(get_called_class(), 0, -7));
+      if (!array_key_exists($name, self::$singletons)) {
+        if (array_key_exists($name, $GLOBALS['temovico']['web_services'])) {
+          $service_info = $GLOBALS['temovico']['web_services'][$name];
+          self::$singletons[$name] = new CurlWebService(
+            $service_info['base_url'],
+            $service_info['connect_timeout'],
+            $service_info['timeout']
+          );
+        } else {
+          throw new CurlWebServiceException("Couldn't find config data for service named $name");
+        }
+      }
+      return self::$singletons[$name];
+    }
     
     // TODO: make this name+config driven.. 
-    public function __construct($base_url, $connect_timeout = 5000, $timeout = 15000) {
-      parent::__construct();  
-      
+    public function __construct($base_url, $connect_timeout = 5000, $timeout = 15000) {   
       $this->base_url = $base_url;
       $this->connect_timeout = $connect_timeout;
       $this->timeout = $timeout;
       
       $this->headers = array();
+    }
+    
+    public static function named($name) {
+
     }
     
     public function add_headers($headers) {
@@ -61,8 +82,8 @@ class CurlWebService extends DataService {
         throw new CurlWebServiceException("Can't initialize curl");
       }
       
-      $this->url = "{$this->base_url}/{$path}";
-              
+      $this->url = $this->base_url . '/' . $path;
+                    
       if ($get_params) {
         $this->url = $this->url . build_query_string($get_params);
       }
@@ -72,7 +93,7 @@ class CurlWebService extends DataService {
         CURLOPT_FOLLOWLOCATION      => true,
         CURLOPT_HEADER              => 0,
         CURLOPT_RETURNTRANSFER      => TRUE,
-        CURLOPT_USERAGENT           => $GLOBALS['temovico']['config']['service']['user_agent'],
+        CURLOPT_USERAGENT           => $GLOBALS['temovico']['service']['user_agent'],
       );
       
       if ($post_params) {
@@ -118,7 +139,8 @@ class CurlWebService extends DataService {
               
           default:
             // Catchall for other errors
-            $result_info['message'] = "Curl error on {$this->url}: ({$this->curl_errno}) {$this->curl_error}";
+            $message = "Curl error on {$this->url}: ({$this->curl_errno}) {$this->curl_error}";
+            $result_info['message'] = $message;
             $this->received($result_info);
             throw new CurlWebServiceException($message, $this->url, $this->curl_errno, $this->curl_error);
         }

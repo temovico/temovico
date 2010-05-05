@@ -1,7 +1,7 @@
 <?php
 
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/Logger.php";
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/Stopwatch.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/Logger.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/Stopwatch.php";
 
 abstract class DataService {
     
@@ -31,7 +31,7 @@ abstract class DataService {
     // Log call data to internal array
     $call = array_merge($this->last_query_info, $this->last_result_info);
 
-    if ($GLOBALS['temovico']['config']['dev_mode']) {
+    if ($GLOBALS['temovico']['dev_mode']) {
       $call['backtrace'] = debug_backtrace();
     }
 
@@ -46,7 +46,7 @@ abstract class DataService {
       }
       $message .= "$k: $v\n";
     }
-    Logger::debug($message, 'service');
+    Logger::info($message, 'service');
   }
   
   public static function calls() {

@@ -1,8 +1,7 @@
 <?php
 
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/exceptions.php";
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/Logger.php";
-include_once "{$GLOBALS['temovico']['config']['website_root']}/conf/routes.conf.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/exceptions.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/Logger.php";
 
 class Dispatcher {
   private $routes;
@@ -37,7 +36,7 @@ class Dispatcher {
             }
           }
 
-          $controller_file = realpath("{$GLOBALS['temovico']['config']['website_root']}/php/controllers/{$this->params['controller']}Controller.php");
+          $controller_file = realpath("{$GLOBALS['temovico']['website_root']}/php/controllers/{$this->params['controller']}Controller.php");
           if (file_exists($controller_file)) {
             require_once $controller_file;
           }

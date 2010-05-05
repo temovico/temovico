@@ -9,9 +9,9 @@
  
  // TODO: decide whether to use true/false or exceptions for error conditions
 
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/DataService.php";
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/Logger.php";
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/functions.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/DataService.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/Logger.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/functions.php";
  
 class MySQLDatabaseService extends DataService {
   
@@ -37,9 +37,9 @@ class MySQLDatabaseService extends DataService {
    * $db = MySQLDatabaseService::get('database_name');
    */
   public static function get($database_name) {
-    if (array_key_exists($database_name, $GLOBALS['temovico']['config']['mysql']['databases'])) {
+    if (array_key_exists($database_name, $GLOBALS['temovico']['mysql']['databases'])) {
       if (!array_key_exists($database_name, self::$instances)) {
-        $connect_info = $GLOBALS['temovico']['config']['mysql']['databases'][$database_name];
+        $connect_info = $GLOBALS['temovico']['mysql']['databases'][$database_name];
         self::$instances[$database_name] = new MySQLDatabaseService(
           $connect_info['database'], 
           $connect_info['host'],
@@ -199,9 +199,7 @@ class MySQLDatabaseService extends DataService {
 	    }
 	    $i++;
   	}
-  	$insertFields = "($insert_fields)";
-  	$insertValues = "($insert_values)";
-    $sql = "INSERT INTO $table $insert_fields VALUES $insert_values";
+    $sql = 'INSERT INTO ' . $table . '(' . $insert_fields . ') VALUES (' . $insert_values . ')';
     return $this->query($sql, 'INSERT');
   }
   
@@ -285,8 +283,8 @@ class MySQLDatabaseService extends DataService {
   public function update($table, $set_hash, $where) {
     // is it reasonable to assume this isn't needed?
 	  // $table = $this->escape($table, $inQuotes = FALSE);
-    $numFields = count($set_hash);
-    if ($numFields == 0) {
+    $num_fields = count($set_hash);
+    if ($num_fields == 0) {
       throw new InvalidSQLException('Error, set hash is empty');
     }
   	$i = 1;

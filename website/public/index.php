@@ -10,7 +10,7 @@ include_once $configFile;
 
 session_start();
 
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/Dispatcher.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/Dispatcher.php";
 $dispatcher = new Dispatcher();
 $dispatcher->dispatch();
 

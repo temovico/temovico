@@ -1,1 +1,18 @@
 a cleanup/refactor of the old technorati model view controller php stack
+
+a suggested http-conf:  
+
+<VirtualHost *:80>
+	# Add yoursite to your /etc/hosts file so you can
+	# type it directly in your browser
+	ServerName website.local
+	ServerAdmin webmaster@website.com
+	DocumentRoot /Users/stephen/Code/temovico/website/public
+	
+	RewriteEngine On
+	RewriteRule ^/([^images|/js|/css]) /index.php
+  RewriteRule ^.* /index.php
+</VirtualHost>
+
+
+

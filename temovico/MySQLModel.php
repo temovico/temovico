@@ -1,7 +1,7 @@
 <?php 
 
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/Model.php";
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/MySQLDatabaseService.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/Model.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/MySQLDatabaseService.php";
 
 /**
  * MySQLModel
@@ -15,14 +15,22 @@ include_once "{$GLOBALS['temovico']['config']['framework_root']}/MySQLDatabaseSe
 class MySQLModel extends Model {
     
   protected $_new_record;
-  protected $database;  
 
-  public function new_record() {
+  public function is_new_record() {
     return $this->_new_record;
+  }
+  
+  public function set_is_old_record() {
+    $this->_new_record = false;
+  }
+  
+  public function __construct($params) {
+    parent::__construct($params);
+    $this->_new_record = true;
   }
 
   public static function database() {
-    return MySQLDatabaseService::get($GLOBALS['temovico']['config']['mysql']['default']);
+    return MySQLDatabaseService::get($GLOBALS['temovico']['mysql']['default']);
   }
 
   public static function database_table_name() {
@@ -43,7 +51,7 @@ class MySQLModel extends Model {
     );
   }
   
-  public static function find_all() {
+  public static function find_all($where = null) {
     $results = self::database()->select(
       $fields = '*',
       $from = self::database_table_name(),
@@ -63,20 +71,26 @@ class MySQLModel extends Model {
   
   public static function instantiate_all($results) {
     $classname = get_called_class();
-    Logger::debug("CLASSNAME is $classname");
     $instances = array();
     foreach ($results as $result) {
       $instance = new $classname($result);
-      $instances[] = $instances;
+      $instance->set_is_old_record();
+      $instances[] = $instance;
     }
-    return $instances;
+    $num_instances = count($instances);
+    if ($num_instances == 0) {
+      return null;
+    } elseif ($num_instances == 1) {
+      return $instances[0];
+    } else {
+      return $instances;
+    }
   }
   
   public static function __callStatic($method_name, $args) {
     $classname = get_called_class();
     if (method_exists($classname, $method_name)) {
-      return call_user_func(array($classname, $method_name));
-      
+      return call_user_func(array($classname, $method_name));      
     } elseif (str_starts_with($method_name, 'find_by_')) {
       $attribute = substr($method_name, 8);
       return self::find_by($attribute, $args[0]);
@@ -101,7 +115,7 @@ class MySQLModel extends Model {
   }
   
   public function primary_key_where_array() {
-    return array("{$self::primary_key_name()} = ?", $this->primary_key());
+    return array(self::primary_key_name() . ' = ?', $this->primary_key());
   }
 
   public function save() {
@@ -109,7 +123,7 @@ class MySQLModel extends Model {
       $this->updated_at = 'NOW()';
     }
   
-    if ($this->new_record()) {
+    if ($this->is_new_record()) {
       if (property_exists($this, 'created_at')) {
         $this->created_at = 'NOW()';
       }

@@ -1,5 +1,6 @@
 CREATE TABLE user (
-  name varchar(255),
+  id INT NOT NULL AUTO_INCREMENT, 
   username varchar(50),
-  created_at datetime
+  created_at datetime,
+  PRIMARY KEY(id)
 );

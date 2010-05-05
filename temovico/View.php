@@ -1,6 +1,6 @@
 <?
 
-include_once "{$GLOBALS['temovico']['config']['framework_root']}/Logger.php";
+include_once "{$GLOBALS['temovico']['framework_root']}/Logger.php";
 
 /**
  * View
@@ -97,7 +97,7 @@ class View {
     
     // Look for layout in /tmpl/layouts/
     // The layout will contain a call back to yield() which will be handled below
-    $path = "{$GLOBALS['temovico']['config']['website_root']}/views/layouts/{$layout}.html.php";
+    $path = "{$GLOBALS['temovico']['website_root']}/views/layouts/{$layout}.html.php";
     if (!is_file($path)) {
       Logger::error("Template not found: $path", array('view'));
       throw new TemplateNotFoundException($path);
@@ -128,11 +128,11 @@ class View {
     // local variables when we do the include below
     extract($this->_data);
     
-    $path = "{$GLOBALS['temovico']['config']['website_root']}/views/{$this->_controller}/{$this->_page}.html.php";
+    $path = "{$GLOBALS['temovico']['website_root']}/views/{$this->_controller}/{$this->_page}.html.php";
     if (!is_file($path)) {
       // If we don't find the file at /views/:controller/:action.html.php then 
       // look in the /views/shared_templates/:action.html.php
-      $path = "{$GLOBALS['temovico']['config']['website_root']}/views/shared_templates/{$this->_page}.html.php";
+      $path = "{$GLOBALS['temovico']['website_root']}/views/shared_templates/{$this->_page}.html.php";
       if (!is_file($path)) {
         Logger::error("Template not found: $path", array("view"));
         throw new TemplateNotFoundException($path);
@@ -184,7 +184,7 @@ class View {
   private function render_stylesheets() {
     array_unshift($this->stylesheets, 'screen.css');
     foreach ($this->stylesheets as $stylesheet) {
-       $href = self::get_static_filename("{$GLOBALS['temovico']['config']['static_dirs']['stylesheets']}/{$stylesheet}");
+       $href = self::get_static_filename("{$GLOBALS['temovico']['static_dirs']['stylesheets']}/{$stylesheet}");
       echo '<link href="' . $href . '" rel="stylesheet" type="text/css" />' . "\n";
     }    
   }
@@ -197,7 +197,7 @@ class View {
   private function render_javascripts() {
     array_unshift($this->javascripts, 'base.js');
     foreach ($this->javascripts as $javascript) {
-      $src = self::get_static_filename("{$GLOBALS['temovico']['config']['static_dirs']['stylesheets']}/{$javascript}");
+      $src = self::get_static_filename("{$GLOBALS['temovico']['static_dirs']['stylesheets']}/{$javascript}");
       echo '<script src="' . $src . '" type="text/javascript"></script>' . "\n";
     }    
   }

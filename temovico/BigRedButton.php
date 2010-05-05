@@ -1,6 +1,6 @@
 <?php
 
-include_once "{$GLOBALS['temovico']['config']['website_root']}/conf/website.conf.php";
+include_once "{$GLOBALS['temovico']['website_root']}/conf/website.conf.php";
 
 /**
  * The Big Red Buttons lets us turn off different parts of a site.
@@ -13,7 +13,7 @@ class BigRedButton {
   * Loads brb.conf file and sets up features
   */
   function __construct() {
-    $this->features = $GLOBALS['temovico']['config']['brb']['features'];
+    $this->features = $GLOBALS['temovico']['brb']['features'];
   }
 
   /**

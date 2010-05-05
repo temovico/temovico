@@ -12,13 +12,11 @@
 class Model {
       
   // dummy set with arrays approach.. to be refined
-  public function __construct($obj) {
+  public function __construct($array) {
     foreach ($array as $key => $val) {
-      $this->$key = $val;
+      $this->set_attribute($key, $val);
     }
-    $this->_new_record = true;
   }
-  
   
   /**
    * Do not call this method. 
@@ -113,14 +111,12 @@ class Model {
    */
   protected function attributes_hash() {        
     $instance_vars = array();
-    $instance_var_names_and_values = get_object_vars($this);
-    foreach ($instance_var_names_and_values as $name => $value) {
-      if ($name{0} != '_') {
+    foreach (get_object_vars($this) as $name => $value) {
+      if (!str_starts_with($name, '_')) {
         $instance_vars[$name] = $value;
       }
     }
-    
-    return $instanc_vars;
+    return $instance_vars;
   }
   
   /**

@@ -11,7 +11,7 @@ mb_internal_encoding('UTF-8');
 $TEMOVICO_WEBSITE_ROOT = realpath(dirname(__FILE__) . '/../');
 $TEMOVICO_WEBSITE_NAME = 'my website';
 
-$GLOBALS['temovico']['config'] = array(
+$GLOBALS['temovico'] = array(
   
   'website_root' => $TEMOVICO_WEBSITE_ROOT,
   'framework_root' => realpath(dirname(__FILE__) . '/../../temovico/'),
@@ -39,6 +39,9 @@ $GLOBALS['temovico']['config'] = array(
   
   'web_services' => array(
     'twitter' => array(
+      'base_url' => 'http://api.twitter.com/1',
+      'connect_timeout' => 5000,
+      'timeout' => 10000
     )
   ),
   
@@ -85,30 +88,30 @@ $GLOBALS['temovico']['config'] = array(
 );
 
 // have to look for php directive so that we can do this and take out the mention of the $GLOBALS['temovico']['routes'] in that file.. 
-// $GLOBALS['temovico']['routes'] = include("{$GLOBALS['temovico']['config']['website_root']}/conf/routes.conf.php");
+// $GLOBALS['temovico']['routes'] = include("{$GLOBALS['temovico']['website_root']}/conf/routes.conf.php");
 
-include("{$GLOBALS['temovico']['config']['website_root']}/conf/routes.conf.php");
+include("{$GLOBALS['temovico']['website_root']}/conf/routes.conf.php");
 
 
 // Full site BRB
-$live_brb = $GLOBALS['temovico']['config']['brb']['live'];
+$live_brb = $GLOBALS['temovico']['brb']['live'];
 if (file_exists($live_brb)) {
   include_once $live_brb;
-  $GLOBALS['temovico']['config']['brb']['features'] = array_merge(
+  $GLOBALS['temovico']['brb']['features'] = array_merge(
     $TEMOVICO_LIVE_BRB_FEATURES, // this is the array defined in the live brb file
-    $GLOBALS['temovico']['config']['brb']['features']
+    $GLOBALS['temovico']['brb']['features']
   );
 }
 
-if (!$GLOBALS['temovico']['config']['brb']['features']['fullsite']) {
-  $fullsite_brb_html = $GLOBALS['temovico']['config']['brb']['fullsite_html'];
+if (!$GLOBALS['temovico']['brb']['features']['fullsite']) {
+  $fullsite_brb_html = $GLOBALS['temovico']['brb']['fullsite_html'];
   if (file_exists($fullsite_brb_html)) {
     include_once $fullsite_brb_html;
   }
   exit;
 }
 
-if ($GLOBALS['temovico']['config']['dev_mode']) {
+if ($GLOBALS['temovico']['dev_mode']) {
   // include dev mode stuff... need to port
 }
 

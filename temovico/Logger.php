@@ -25,8 +25,8 @@ class Logger {
     $this->priority = self::$LEVELS['DEBUG'];
     $this->filepath = '/var/log/website.log';
     
-    if (array_key_exists('log', $GLOBALS['temovico']['config'])) {
-      $log_config = $GLOBALS['temovico']['config']['log'];
+    if (array_key_exists('log', $GLOBALS['temovico'])) {
+      $log_config = $GLOBALS['temovico']['log'];
       
       if (array_key_exists('priority', $log_config)) {
         $this->priority = self::$LEVELS[$log_config['priority']];
