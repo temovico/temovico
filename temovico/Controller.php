@@ -102,7 +102,7 @@ abstract class Controller {
         }
       }
 
-      include_once "{$GLOBALS['temovico']['website_root']}/php/helpers/{$this->controller_name}.php";
+      include_once "{$GLOBALS['temovico']['website_root']}/lib/helpers/{$this->controller_name}.php";
 
       /////////////////////////////////
       // PREPARE AND RENDER THE VIEW //

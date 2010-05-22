@@ -7,7 +7,7 @@ a suggested http-conf:
 	# type it directly in your browser
 	ServerName website.local
 	ServerAdmin webmaster@website.com
-	DocumentRoot /Users/stephen/Code/temovico/website/public
+	DocumentRoot /Library/WebServer/Documents/temovico/app/public
 	
 	RewriteEngine On
 	RewriteRule ^/([^images|/js|/css]) /index.php
