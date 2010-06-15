@@ -1,5 +1,4 @@
-a cleanup/refactor of the old technorati model view controller php stack
-
+A lightweight php MVC framework developed at Technorati
 a suggested http-conf:  
 
 <VirtualHost *:80>
@@ -11,7 +10,6 @@ a suggested http-conf:
 	
 	RewriteEngine On
 	RewriteRule ^/([^images|/js|/css]) /index.php
-  RewriteRule ^.* /index.php
 </VirtualHost>
 
 
