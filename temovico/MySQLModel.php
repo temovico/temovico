@@ -44,11 +44,13 @@ class MySQLModel extends Model {
     return $instance;
   }
   
+
   public static function find($primary_key) {
-    return self::find_by(
-      $attribute = self::primary_key_name(), 
+    $find_all = self::find_by(
+      $attribute = static::primary_key_name(), 
       $value = $primary_key
     );
+		return $find_all[0];
   }
   
   public static function find_all($where = null) {
@@ -57,13 +59,13 @@ class MySQLModel extends Model {
       $from = self::database_table_name(),
       $where = array('1 = 1')
     );
-    return self::instantiate_all($results);
+    return static::instantiate_all($results);
   }
   
   public static function find_by($attribute, $value) {
     $results = self::database()->select(
       $fields = '*',
-      $from = self::database_table_name(),
+      $from = static::database_table_name(),
       $where = array("$attribute = ?", $value)
     );
     return self::instantiate_all($results);
@@ -73,19 +75,17 @@ class MySQLModel extends Model {
     $classname = get_called_class();
     $instances = array();
     foreach ($results as $result) {
-      $instance = new $classname($result);
-      $instance->set_is_old_record();
-      $instances[] = $instance;
+      $instances[] = static::instantiate($result);
     }
-    $num_instances = count($instances);
-    if ($num_instances == 0) {
-      return null;
-    } elseif ($num_instances == 1) {
-      return $instances[0];
-    } else {
-      return $instances;
-    }
+		return $instances;
   }
+
+	public static function instantiate($result) {
+		$classname = get_called_class();
+		$instance = new $classname($result);
+		$instance->set_is_old_record();
+		return $instance;
+	}
   
   public static function __callStatic($method_name, $args) {
     $classname = get_called_class();
@@ -93,7 +93,7 @@ class MySQLModel extends Model {
       return call_user_func(array($classname, $method_name));      
     } elseif (str_starts_with($method_name, 'find_by_')) {
       $attribute = substr($method_name, 8);
-      return self::find_by($attribute, $args[0]);
+      return static::find_by($attribute, $args[0]);
     } 
   }
   
@@ -115,7 +115,7 @@ class MySQLModel extends Model {
   }
   
   public function primary_key_where_array() {
-    return array(self::primary_key_name() . ' = ?', $this->primary_key());
+    return array(static::primary_key_name() . ' = ?', $this->primary_key());
   }
 
   public function save() {
@@ -130,11 +130,11 @@ class MySQLModel extends Model {
       $set_hash = $this->attributes_hash();
     
       if (self::primary_key_name()) {
-        unset($set_hash[self::primary_key_name()]);
+        unset($set_hash[static::primary_key_name()]);
       }
     
       $result = self::database()->insert(
-        $table = self::database_table_name(), 
+        $table = static::database_table_name(), 
         $set_hash
       );
       
@@ -143,7 +143,7 @@ class MySQLModel extends Model {
     
     } else {
       $result = self::database()->update(
-        $table = self::database_table_name(),
+        $table = static::database_table_name(),
         $set_hash = $this->attributes_hash(),
         $where = $this->primary_key_where_array()
       );
@@ -155,7 +155,7 @@ class MySQLModel extends Model {
   public function delete() {
     if ($this->primary_key()) {
       return $this->database()->delete(
-        $table = self::database_table_name(),
+        $table = static::database_table_name(),
         $where = $this->primary_key_where_array()
       );
     } else {

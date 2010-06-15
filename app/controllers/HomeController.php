@@ -19,8 +19,9 @@ class HomeController extends Controller {
   }
   
   public function user() {
-    $this->user = User::find_by_username($this->params['username']);
-    $this->tweets = $this->user->tweets();
+    $this->users = User::find_by_username($this->params['username']);
+		$this->user = $this->users[0];
+		$this->tweets = $this->user->tweets();
   }
   
   public function create() {
@@ -32,9 +33,9 @@ class HomeController extends Controller {
   }
   
   public function delete() {
-    $user = User::find_by_username($this->params['username']);
-    $user->delete();
-    $this->redirect_to('/users');
+    $users = User::find_by_username($this->params['username']);
+		$user = $users[0];
+		$this->redirect_to('/users');
   }
    
 }
