@@ -1,5 +1,6 @@
-A lightweight php MVC framework developed at Technorati
-a suggested http-conf:  
+A lightweight php MVC framework. This is a refactored version of code developed at Technorati.
+
+here's a suggested http-conf:  
 
 <VirtualHost *:80>
 	# Add yoursite to your /etc/hosts file so you can
