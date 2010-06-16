@@ -36,11 +36,11 @@ class Dispatcher {
             }
           }
 			
-          $controller_file = realpath("{$GLOBALS['temovico']['website_root']}/controllers/{$this->params['controller']}Controller.php");
+          $controller_file = realpath("{$GLOBALS['temovico']['website_root']}/app/controllers/{$this->params['controller']}Controller.php");
           if ($controller_file) {
             require_once $controller_file;
           } else {
-			throw new FileNotFoundException("{$GLOBALS['temovico']['app_root']}/controllers/{$this->params['controller']}Controller.php");
+			throw new FileNotFoundException("{$GLOBALS['temovico']['website_root']}/app/controllers/{$this->params['controller']}Controller.php");
 		  }
           $classname = "{$this->params['controller']}Controller";
           $controller = new $classname($this->params);

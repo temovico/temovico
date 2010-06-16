@@ -97,7 +97,7 @@ class View {
     
     // Look for layout in /tmpl/layouts/
     // The layout will contain a call back to yield() which will be handled below
-    $path = "{$GLOBALS['temovico']['website_root']}/views/layouts/{$layout}.html.php";
+    $path = "{$GLOBALS['temovico']['website_root']}/app/views/layouts/{$layout}.html.php";
     if (!is_file($path)) {
       Logger::error("Template not found: $path", array('view'));
       throw new TemplateNotFoundException($path);
@@ -128,11 +128,11 @@ class View {
     // local variables when we do the include below
     extract($this->_data);
     
-    $path = "{$GLOBALS['temovico']['website_root']}/views/{$this->_controller}/{$this->_page}.html.php";
+    $path = "{$GLOBALS['temovico']['website_root']}/app/views/{$this->_controller}/{$this->_page}.html.php";
     if (!is_file($path)) {
       // If we don't find the file at /views/:controller/:action.html.php then 
       // look in the /views/shared_templates/:action.html.php
-      $path = "{$GLOBALS['temovico']['website_root']}/views/shared_templates/{$this->_page}.html.php";
+      $path = "{$GLOBALS['temovico']['website_root']}/app/views/shared_templates/{$this->_page}.html.php";
       if (!is_file($path)) {
         Logger::error("Template not found: $path", array("view"));
         throw new TemplateNotFoundException($path);
