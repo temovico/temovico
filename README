@@ -1,16 +1,11 @@
-A lightweight php MVC framework. This is a refactored version of code developed at Technorati.
+A lightweight php MVC framework. This is a refactored version of code initially developed at Technorati by Matthew Levine, Andrei Scheinkman and Ryan King with later development by Stephen Handley and Courtland Alves, who is currently leading the project. 
+
+Please see an example implementation at http://github.com/temovico/temovico_example
 
 here's a suggested http-conf:  
 
 <VirtualHost *:80>
-	# Add yoursite to your /etc/hosts file so you can
-	# type it directly in your browser
-	ServerName website.local
-	ServerAdmin webmaster@website.com
-	DocumentRoot /Library/WebServer/Documents/temovico/app/public
-	
-	RewriteEngine On
-	RewriteRule ^/([^images|/js|/css]) /index.php
+...
 </VirtualHost>
 
 
