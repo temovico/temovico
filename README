@@ -1,4 +1,4 @@
-A lightweight php MVC framework. This is a refactored version of code initially developed at Technorati by Matthew Levine, Andrei Scheinkman and Ryan King with later development by Stephen Handley and Courtland Alves, who is currently leading the project. 
+A lightweight PHP MVC framework. This is a refactored version of code initially developed at <a href="http://technorati.com">Technorati</a> by Matthew Levine, Andrei Scheinkman and Ryan King with later development by Stephen Handley and Courtland Alves, who is currently leading the project. 
 
 Please see an example implementation at http://github.com/temovico/temovico_example
 
