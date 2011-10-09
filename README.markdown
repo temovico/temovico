@@ -5,5 +5,12 @@ Please see an [example implementation](http://github.com/temovico/temovico_examp
 Here's a suggested httpd.conf (TBI):
 
     <VirtualHost *:80>
-        ...
+        # Add yoursite to your /etc/hosts file so you can
+        # type it directly in your browser
+        ServerName temovico.example
+        ServerAdmin webmaster@website.com
+        DocumentRoot /Library/WebServer/Documents/temovico_example/public
+
+        RewriteEngine On
+        RewriteRule ^/(?!((images)|(js)|(css))) /index.php
     </VirtualHost>
